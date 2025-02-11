@@ -96,11 +96,11 @@ const Contact = () => {
   const contactInfo = [
     {
       icon: <MapPin className="w-7 h-7 text-indigo-600" />,
-      content: "ATONEY\nAL Mansoori Building \nOffice 414 \nAl Quasis Dubai",
+      content: "ATONEY\nAL Mansour Building \n 7th A St \nAl Quasis Dubai",
     },
     {
       icon: <Phone className="w-6 h-6 text-indigo-600" />,
-      content: "+971 65460620\n+971 527451896\n+971 52451803",
+      content: "+971 65460620\n+971 527451896\n+971 52451803 \n+971 45705563 ( landline )",
     },
     {
       icon: <Mail className="w-6 h-6 text-indigo-600" />,
@@ -161,8 +161,8 @@ const Contact = () => {
                   <h3 className="text-xl font-semibold text-gray-900">Follow Us</h3>
                   <div className="flex space-x-4 mt-4">
                     {[
-                      { Icon: Facebook, href: "https://www.facebook.com/servyxcertification" },
-                      { Icon: Linkedin , href: "https://www.linkedin.com/company/servyx-certification/" },
+                      
+                      { Icon: Linkedin , href: "https://www.linkedin.com/company/atoney/?viewAsMember=true" },
                       { Icon: Instagram, href: "https://www.instagram.com/atoneyquality?utm_source=qr&igsh=MWV5ZGpxb2NvbmN%20hMg==" },
                     ].map(({ Icon, href }, index) => (
                       <a

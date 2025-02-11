@@ -1,5 +1,5 @@
 // components/Header.jsx
-import React, { useState, useEffect, useCallback, memo } from 'react';
+import React, { useState, useEffect, useCallback, memo, useRef } from 'react';
 import { 
   Menu, 
   X, 
@@ -16,7 +16,6 @@ import logo from '../assets/logo.png';
 
 // Constants
 const SOCIAL_LINKS = [
-  { icon: Facebook, link: 'https://www.facebook.com/servyxcertification', name: 'Facebook' },
   { icon: Linkedin, link: 'https://www.linkedin.com/company/servyx-certification/', name: 'LinkedIn' },
   { icon: Instagram, link: 'https://www.instagram.com/servyxcertification/', name: 'Instagram' }
 ];
@@ -111,6 +110,8 @@ const NewsletterDialog = memo(({ isOpen, onClose, onSubmit, email, setEmail }) =
 const Dropdown = memo(({ title, items, isOpen, toggleOpen, closeDropdown, isMobile = false }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dropdownRef = useRef(null);
+  const closeTimerRef = useRef(null);
 
   const handleLinkClick = useCallback((href) => {
     closeDropdown();
@@ -127,14 +128,65 @@ const Dropdown = memo(({ title, items, isOpen, toggleOpen, closeDropdown, isMobi
     }
   }, [closeDropdown, navigate, location]);
 
+  // For mobile view: close dropdown when clicking outside
+  useEffect(() => {
+    if (isMobile && isOpen) {
+      const handleClickOutside = (e) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+          closeDropdown();
+        }
+      };
+
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [isMobile, isOpen, closeDropdown]);
+
+  // For desktop view: use a short delay on close so users can move into the dropdown
+  const handleMouseEnter = () => {
+    if (!isMobile) {
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
+      if (!isOpen) {
+        toggleOpen();
+      }
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (!isMobile && isOpen) {
+      closeTimerRef.current = setTimeout(() => {
+        closeDropdown();
+      }, 200);
+    }
+  };
+
+  // Clear timer on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <div className={`relative ${isMobile ? 'w-full' : ''}`}>
+    <div
+      className={`relative ${isMobile ? 'w-full' : ''}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      ref={dropdownRef}
+    >
       <button
         type="button"
-        className={`inline-flex items-center text-base font-medium text-gray-600 hover:text-blue-600 transition-colors duration-200 focus:outline-none ${
+        className={`inline-flex items-center text-base font-medium text-gray-600 hover:text-blue-600 transition-colors duration-200 ${
           isMobile ? 'w-full justify-between' : ''
         }`}
-        onClick={toggleOpen}
+        onClick={isMobile ? toggleOpen : undefined}
         aria-haspopup="true"
         aria-expanded={isOpen}
       >
@@ -189,9 +241,9 @@ const TopHeader = memo(() => (
   <div className="bg-gradient-to-r from-blue-900 to-blue-800 py-2">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center">
       <div className="flex items-center space-x-4">
-        <a href="mailto:info@servyxcertification.com" className="flex items-center text-sm text-white/90 hover:text-white transition-colors space-x-2">
+        <a href="mailto:info@atoney.com" className="flex items-center text-sm text-white/90 hover:text-white transition-colors space-x-2">
           <Mail className="h-7 w-7" />
-          <span className="hidden sm:inline">info@servyxcertification.com</span>
+          <span className="hidden sm:inline">info@atoney.com</span>
         </a>
         <a href="tel:+971527451896" className="flex items-center text-sm text-white/90 hover:text-white transition-colors space-x-2">
           <Phone className="h-7 w-7" />
@@ -235,7 +287,7 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Toggle Dropdown
+  // Toggle Dropdown (used in both mobile and desktop)
   const handleDropdownToggle = useCallback((dropdown) => {
     setActiveDropdown((prev) => (prev === dropdown ? null : dropdown));
   }, []);
@@ -253,16 +305,15 @@ const Header = () => {
       console.log('Subscribed with email:', newsletterEmail);
       setNewsletterEmail('');
       setNewsletterDialogOpen(false);
-      // Optionally, display a success message to the user
     } catch (error) {
       console.error('Newsletter subscription failed:', error);
-      // Optionally, display an error message to the user
     }
   }, [newsletterEmail]);
 
-  // Close Mobile Menu
+  // Close Mobile Menu and any open dropdown
   const closeMobileMenu = useCallback(() => {
     setMobileMenuOpen(false);
+    setActiveDropdown(null);
   }, []);
 
   return (
@@ -351,10 +402,7 @@ const Header = () => {
                     items={SERVICES_DATA.dropdown}
                     isOpen={activeDropdown === SERVICES_DATA.name}
                     toggleOpen={() => handleDropdownToggle(SERVICES_DATA.name)}
-                    closeDropdown={() => {
-                      handleDropdownClose();
-                      closeMobileMenu();
-                    }}
+                    closeDropdown={handleDropdownClose}
                     isMobile={true}
                   />
                 </div>
