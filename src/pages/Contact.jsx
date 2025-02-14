@@ -13,9 +13,8 @@ import {
 } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert"
 
-
-
 const Contact = () => {
+  // ... [Previous state and handlers remain the same]
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -161,8 +160,7 @@ const Contact = () => {
                   <h3 className="text-xl font-semibold text-gray-900">Follow Us</h3>
                   <div className="flex space-x-4 mt-4">
                     {[
-                      
-                      { Icon: Linkedin , href: "https://www.linkedin.com/company/atoney/?viewAsMember=true" },
+                      { Icon: Linkedin, href: "https://www.linkedin.com/company/atoney/?viewAsMember=true" },
                       { Icon: Instagram, href: "https://www.instagram.com/atoneyquality?utm_source=qr&igsh=MWV5ZGpxb2NvbmN%20hMg==" },
                     ].map(({ Icon, href }, index) => (
                       <a
@@ -280,25 +278,23 @@ const Contact = () => {
         <div className="mt-20">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">Our Location</h2>
           <div className="bg-white p-4 rounded-2xl shadow-xl">
-  <a
-    href="https://maps.app.goo.gl/R8AzAiDbjLgqLMfXA"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="block"
-  >
-    <iframe
-      title="Atoney Office Location"
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3620.145631407507!2d55.3847552!3d25.2806408!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x536416936d4bc49%3A0x6f5ee12677ffb1a!2sATONEY%20QUALITY%20AND%20STANDARDIZATION%20CONSULTANCY!5e0!3m2!1sen!2sin!4v1706523456789!5m2!1sen!2sin"
-      width="100%"
-      height="450"
-      allowFullScreen=""
-      loading="lazy"
-      className="rounded-lg pointer-events-none"
-    />
-  </a>
-</div>
-
-
+            <a
+              href="https://maps.app.goo.gl/aDUUnMP7MMMfDAJY7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block"
+            >
+              <iframe
+                title="Atoney Office Location"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.3027670977287!2d55.38475519999999!3d25.280640799999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5c3c3c3c3c3f%3A0x3e5f5c3c3c3c3c3f!2sATONEY!5e0!3m2!1sen!2sae!4v1621234567890!5m2!1sen!2sae"
+                width="100%"
+                height="450"
+                allowFullScreen=""
+                loading="lazy"
+                className="rounded-lg pointer-events-none"
+              />
+            </a>
+          </div>
         </div>
       </div>
     </div>
