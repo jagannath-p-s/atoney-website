@@ -24,8 +24,8 @@ const Footer = () => {
           {/* Business Hours Section */}
           <div className="space-y-2">
             <h3 className="text-xl font-semibold text-white mb-2">Business Hours</h3>
-            <p className="text-gray-300">Monday - Saturday: 08:00 AM - 5:00 PM</p>
-            <p className="text-gray-300">Sunday: Closed</p>
+            <p className="text-gray-300">Monday - friday: 09:00 AM - 5:00 PM</p>
+            
           </div>
 
           {/* Contact Section */}
